@@ -6,9 +6,10 @@ Tested up to: 2.9.1
 Requires at least: 1.5
 Stable tag: trunk
 
-Display a flash clock on your sidebar set automatically to your location's timezone. Select from a choice of clocks, colors and sizes.
 
 == Description ==
+
+Display a flash clock on your sidebar set automatically to your location's timezone. Select from a choice of clocks, colors and sizes.
 
     * Select from an analog or digital clock
     * Select sizes
