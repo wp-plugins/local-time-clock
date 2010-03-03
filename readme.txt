@@ -20,7 +20,7 @@ Display a flash clock on your sidebar set automatically to your location's timez
 == Installation ==
 
 1. Download the zip file and extract the contents,
-2. Upload the folder `localtime_clock` to your WP plugin folder `/wp-content/plugins/` directory,
+2. Upload the folder `local-time-clock` to your WP plugin folder `/wp-content/plugins/` directory,
 3. Go to Plugins > Installed, and activate the plugin,
 4. Go to Appearance > Widgets, and drag the widget to a sidebar,
 5. Select the clock type, colors, country, city and size from the clocks setting menu
