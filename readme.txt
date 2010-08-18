@@ -4,22 +4,23 @@ Donate link: http://www.localtimes.info/
 Tags: clock, flash clock, clock widget, local time, timezone, time, analog clock, digital clock, local times, world clock
 Tested up to: 2.9.1
 Requires at least: 1.5
-Stable tag: trunk
+Stable tag: 1.0
 
-Display a flash clock on your sidebar set automatically to your location's timezone. Select from a choice of clocks, colors and sizes.
 
 == Description ==
 
-    * Select from an analog or digital clock
-    * Select sizes
-    * Select text, border and background color
-    * Set your location and the clock will be automatically set to the correct timezone and daylight saving time from the [localtimes.info](http://localtimes.info "Local Times round the world") database
+Display a flash clock on your sidebar set automatically to your location's timezone. Select from a choice of clocks, colors and sizes.
+
+* Select from an analog or digital clock
+* Select sizes
+* Select text, border and background color
+* Set your location and the clock will be automatically set to the correct timezone and daylight saving time from the [localtimes.info](http://localtimes.info "Local Times round the world") database
 
 
 == Installation ==
 
 1. Download the zip file and extract the contents,
-2. Upload the folder `localtime_clock` to your WP plugin folder `/wp-content/plugins/` directory,
+2. Upload the folder `local-time-clock` to your WP plugin folder `/wp-content/plugins/` directory,
 3. Go to Plugins > Installed, and activate the plugin,
 4. Go to Appearance > Widgets, and drag the widget to a sidebar,
 5. Select the clock type, colors, country, city and size from the clocks setting menu

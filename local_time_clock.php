@@ -267,7 +267,7 @@ function local_time_clock_init()
 	$country_name = str_replace(" ", "+", $country_name);
 	$city= str_replace(" ", "+", $city);
 	$country_code = strtolower($country);
-	$province_string = "&province_string=".$state_name;
+	$province_string = "&province=".$state_name;
 
 	$widget_call_string = 'http://localtimes.info/wp_clock.php?country='.$country_name;
 	$widget_call_string .= $province_string . '&city='.$city;
