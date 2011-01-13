@@ -2,7 +2,7 @@
 /*
 Plugin Name: Local Time Clock
 Description: Display a flash clock on your sidebar set automatically to your location's timezone. Choice of clocks, colors and sizes.
-Author: localtimes.info
+Author: enclick
 Version: 1.0
 Author URI: http://localtimes.info
 Plugin URI: http://localtimes.info/wordpress-clock-plugin/
