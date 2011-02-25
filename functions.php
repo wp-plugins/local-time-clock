@@ -229,8 +229,14 @@ function print_backgroundcolor_list($text_color){
 function print_type_list($type){
 
 	 $type_list =array(
-	       "0" => "Analog",
-	       "1" => "Digital");
+	       "100" => "Analog Basic",
+	       "121" => "World Globe",
+	       "119" => "Analog with Flag ",
+	       "110" => "Analog Shiny 3D",
+	       "1000" => "Digital Basic",
+	       "1100" => "Digital Time and Date",
+	       "1025" => "Digital Stick-it Note",
+	       "1024" => "Digital Flip over");
 
 
 	 echo "\n";

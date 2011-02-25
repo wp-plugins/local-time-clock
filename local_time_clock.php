@@ -3,7 +3,7 @@
 Plugin Name: Local Time Clock
 Description: Display a flash clock on your sidebar set automatically to your location's timezone. Choice of clocks, colors and sizes.
 Author: enclick
-Version: 1.0
+Version: 1.1
 Author URI: http://localtimes.info
 Plugin URI: http://localtimes.info/wordpress-clock-plugin/
 */
@@ -39,7 +39,7 @@ function local_time_clock_init()
            	'city' => 'Washington',
            	'size' => '150',
            	'type' => '1000',
-           	'typeflag' => '1',
+           	'typeflag' => '1000',
            	'text_color' => '#000000',
            	'border_color' => '#963939',
            	'background_color' => '#FFFFFF'
@@ -117,7 +117,7 @@ function local_time_clock_init()
 
       	// Set clock type
       	echo '<li style="list-style: none;"><label for="local-clock-typeflag">'.'Clock Type:&nbsp;';
-       	echo '<select id="local-clock-typeflag" name="local-clock-typeflag"  style="width:75px" >';
+       	echo '<select id="local-clock-typeflag" name="local-clock-typeflag"  style="width:125px" >';
       	print_type_list($typeflag);
       	echo '</select></label>';
       	echo '</li>';
@@ -253,6 +253,7 @@ function local_time_clock_init()
 
 
 	// Output title
+	$title = UCWords($title);
 	echo $before_title . $title . $after_title; 
 
 
@@ -299,10 +300,8 @@ function local_time_clock_init()
 	$border_color = str_replace("#","",$border_color);
 
 	$widget_call_string .= '&cp3_Hex='.$border_color.'&cp2_Hex='.$background_color.'&cp1_Hex='.$text_color. $transparent_string . $ampm_string. '&fwdt='.$size;
-	if($typeflag == 1)
-    	    $widget_call_string .= "&widget_number=1000";
-	else
-	    $widget_call_string .= "&widget_number=100";
+
+ 	$widget_call_string .= "&widget_number=$typeflag";
 
 	echo '<script type="text/javascript" src="'.$widget_call_string . '"></script></div><!-end of code-->';
 
