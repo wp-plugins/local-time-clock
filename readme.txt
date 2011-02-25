@@ -1,35 +1,46 @@
 === Local Time Clock ===
-Contributors: localtimes.info
+Contributors: enclick
 Donate link: http://www.localtimes.info/
 Tags: clock, flash clock, clock widget, local time, timezone, time, analog clock, digital clock, local times, world clock
-Tested up to: 2.9.1
+Tested up to: 3.0.9
 Requires at least: 1.5
-Stable tag: trunk
+Stable tag: 1.1
 
-Display a flash clock on your sidebar set automatically to your location's timezone. Select from a choice of clocks, colors and sizes.
 
 == Description ==
 
-    * Select from an analog or digital clock
-    * Select sizes
-    * Select text, border and background color
-    * Set your location and the clock will be automatically set to the correct timezone and daylight saving time from the [localtimes.info](http://localtimes.info "Local Times round the world") database
+Display a flash clock on your sidebar set automatically to your location's timezone. Select from a choice of clocks, colors and sizes.
+
+* Select from a range of analog and digital clocks (see screenshots or designs show in [localtimes.info/getwidget](http://localtimes.info/get-clock-widget/analog/ "Local Times round the world")
+* Select size, 
+* Select color of text, border and background,
+* Set your location and the clock will be automatically set to the correct timezone and daylight saving time from the [localtimes.info](http://localtimes.info "Local Times round the world") database
 
 
 == Installation ==
 
 1. Download the zip file and extract the contents,
-2. Upload the folder `localtime_clock` to your WP plugin folder `/wp-content/plugins/` directory,
+2. Upload the folder `local-time-clock` to your WP plugin folder `/wp-content/plugins/` directory,
 3. Go to Plugins > Installed, and activate the plugin,
 4. Go to Appearance > Widgets, and drag the widget to a sidebar,
 5. Select the clock type, colors, country, city and size from the clocks setting menu
 
 == Screenshots ==
 
-1. Digital clocks
-2. Analog clocks
+1. Digital Basic clock
+2. Analog Basic clock
+3. Analog Flag clock
+4. Analog World Globe clock
+5. Analog Shiny 3D clock
+6. Digital Time and Date clock
+7. Digital Flip-over clock
+8. Digital Stick-it Note clock
 
 == Changelog ==
+
+= 1.1 =
+* Released 25/02/2011
+* Upgraded the range of clock designs with the most popular clocks on localtimes.info (see Screenshots)
 
 = 1.0 =
 * Released 08/02/2010 
