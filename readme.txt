@@ -11,7 +11,7 @@ Stable tag: 1.1
 
 Display a flash clock on your sidebar set automatically to your location's timezone. Select from a choice of clocks, colors and sizes.
 
-* Select from a range of analog and digital clocks (see screenshots or designs show in [localtimes.info/getwidget](http://localtimes.info/get-clock-widget/analog/ "Local Times round the world")
+* Select from a range of analog and digital clocks. See screenshots tab or designs shown in [localtimes.info/getwidget](http://localtimes.info/get-clock-widget/analog/ "Clock Widget Designs")
 * Select size, 
 * Select color of text, border and background,
 * Set your location and the clock will be automatically set to the correct timezone and daylight saving time from the [localtimes.info](http://localtimes.info "Local Times round the world") database
@@ -40,7 +40,7 @@ Display a flash clock on your sidebar set automatically to your location's timez
 
 = 1.1 =
 * Released 25/02/2011
-* Upgraded the range of clock designs with the most popular clocks on localtimes.info (see Screenshots)
+* Upgraded the range of clock designs with the most popular clocks on  [localtimes.info](http://localtimes.info/ "localtimes.info") (see Screenshots)
 
 = 1.0 =
 * Released 08/02/2010 
