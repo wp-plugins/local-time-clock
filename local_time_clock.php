@@ -301,6 +301,7 @@ function local_time_clock_init()
 
 	$widget_call_string .= '&cp3_Hex='.$border_color.'&cp2_Hex='.$background_color.'&cp1_Hex='.$text_color. $transparent_string . $ampm_string. '&fwdt='.$size;
 
+	if($typeflag == 1)$typeflag=1000;
  	$widget_call_string .= "&widget_number=$typeflag";
 
 	echo '<script type="text/javascript" src="'.$widget_call_string . '"></script></div><!-end of code-->';
