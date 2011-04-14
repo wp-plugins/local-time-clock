@@ -24,7 +24,7 @@ Display a flash clock on your sidebar set automatically to your location's timez
 3. Go to Plugins > Plugins, and activate the plugin,
 4. Go to Appearance > Widgets, and drag the widget to a sidebar,
 5. Select the country, city, size, colour from the menu
-6. Send us an email to widgets at localtimes.info with any problems
+6. Email any problems to widgets at localtimes.info, we will respond promptly
 7. Please rate our clock plugin! 
 
 == Screenshots ==
