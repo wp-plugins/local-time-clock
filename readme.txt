@@ -21,9 +21,11 @@ Display a flash clock on your sidebar set automatically to your location's timez
 
 1. Download the zip file and extract the contents,
 2. Upload the folder `local-time-clock` to your WP plugin folder `/wp-content/plugins/` directory,
-3. Go to Plugins > Installed, and activate the plugin,
+3. Go to Plugins > Plugins, and activate the plugin,
 4. Go to Appearance > Widgets, and drag the widget to a sidebar,
-5. Select the clock type, colors, country, city and size from the clocks setting menu
+5. Select the country, city, size, colour from the menu
+6. Send us an email to widgets at localtimes.info with any problems
+7. Please rate our clock plugin! 
 
 == Screenshots ==
 
@@ -50,6 +52,9 @@ Display a flash clock on your sidebar set automatically to your location's timez
 
 == Frequently Asked Questions ==
 
+= My city is not displayed  =
+Remember to save settings after each drop down selection
+
 = How do I customize the colours? =
 Go to the Appearance->Widgets tab in your wordpress admin panel, and choose click on settings for the local time clock, select text, border and background colors from the drop downs
 
@@ -69,4 +74,7 @@ Yes, the clock automatically changes for all Daylight Saving Time changes in the
 Daylight saving time is the convention of advancing clocks so that afternoons have more daylight and mornings have less. [Click here for more information](http://en.wikipedia.org/wiki/Daylight_saving_time "Daylight Saving Time")
 
 = Is there support  ? = 
-Further support is available at [localtimes.info/support](http://localtimes.info/wordpress-clock-plugin/) 
+Further support is available at [localtimes.info/support](http://localtimes.info/wordpress-clock-plugin/), or [localtimes.info/conditions](http://localtimes.info/get-clock-widget/analog/#conditions) 
+
+= Contact  = 
+Email us at widgets at localtimes.info or send us a message on [twitter.com/localtimes](http://twitter.com/localtimes) 

@@ -93,7 +93,7 @@ function local_time_clock_init()
 
        	// Get country, state, city
 
-       	echo '<li style="list-style: none;"><label for="local-clock-country">Country:'.
+       	echo '<li style="list-style: none;"><label for="local-clock-country">Country <div style="display:inline;font-size:9px">(Save after selecting)</div>'.
                '<select id="local-clock-country" name="local-clock-country" style="width:100%">';
 
      	$country_name = print_thecountry_list($country);
@@ -103,7 +103,7 @@ function local_time_clock_init()
 
        	// Get province
 
-       	echo '<li style="list-style: none;"><label for="local-clock-state">Province or State:'.
+       	echo '<li style="list-style: none;"><label for="local-clock-state">Province or State'.
                '<select id="local-clock-state" name="local-clock-state" style="width:100%">';
      	$state_name = print_theprovince_list($country,$state);
       	echo '<input id="local-clock-state_name" name="local-clock-state_name" type="hidden" value="'.$state_name.'" />';
