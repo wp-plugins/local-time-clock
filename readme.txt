@@ -60,6 +60,9 @@ Go to the Appearance->Widgets tab in your wordpress admin panel, and choose clic
 = Can I choose my colour? =
 You can select the clock to be transparent, so the clock's background will be that of your web page
 
+= Can I paste the clock directly into a page in a post, not on the sidebar ? =
+Yes, the javascript is available directly from  [localtimes.info](http://localtimes.info/ "localtimes.info"). You must paste your clock's javascript into the post in HTML mode.
+
 = Do I need to set the city ? =
 Choosing the city is not necessary for an accurante timezone. Setting the clock's city changes adjusts the clocks clickthrough URL to go to the correct localtimes.info page for the city. 
 
