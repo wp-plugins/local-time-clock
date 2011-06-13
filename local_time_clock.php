@@ -3,211 +3,350 @@
 Plugin Name: Local Time Clock
 Description: Display a flash clock on your sidebar set automatically to your location's timezone. Choice of clocks, colors and sizes.
 Author: enclick
-Version: 1.1
+Version: 1.2
 Author URI: http://localtimes.info
 Plugin URI: http://localtimes.info/wordpress-clock-plugin/
 */
 
+require_once("functions.php");
+
+$province_list;
+$country_list;
+
+/**
+ * Add function to widgets_init that'll load our widget.
+ */
+
+add_action( 'widgets_init', 'load_local_time_clock' );
+
+/**
+ * Register our widget.
+ * 'local_time_clock' is the widget class used below.
+ *
+ */
+function load_local_time_clock() {
+        register_widget( 'local_time_clock' );
+}
 
 
-function local_time_clock_init() 
+/*******************************************************************************************
+*
+*       Local Time Clock  class.
+*       This class handles everything that needs to be handled with the widget:
+*       the settings, form, display, and update.
+*
+*********************************************************************************************/
+class local_time_clock extends WP_Widget
 {
 
-     if ( !function_exists('register_sidebar_widget') || !function_exists('register_widget_control') )
-    	   return; 
+      /*******************************************************************************************
+      *
+      *
+      * Widget setup.
+      *
+      *
+      ********************************************************************************************/
+      function local_time_clock() {
+                #Widget settings
+                $widget_ops = array( 'description' => __('Displays a local time clock for any city', 'local_time_clock') );
 
-    function local_time_clock_control() 
-    {
+                #Widget control settings
+                $control_ops = array( 'width' => 200, 'height' => 550, 'id_base' => 'local_time_clock' );
 
-        $newoptions = get_option('local_time_clock');
-    	$options = $newoptions;
-	$options_flag=0;
-
-
-    	if ( empty($newoptions) )
-	{
-	   $options_flag=1;
-      	   $newoptions = array(
-	   	'title'=>'Washington Time',
-           	'titleflag'=>'1', 
-           	'transparentflag'=>'0', 
-           	'ampmflag'=>'0', 
-           	'country' => 'US',
-           	'country_name' => 'United States',
-		'state' => 'US-DC',
-		'state_name' => 'District of Columnbia',
-           	'city' => 'Washington',
-           	'size' => '150',
-           	'type' => '1000',
-           	'typeflag' => '1000',
-           	'text_color' => '#000000',
-           	'border_color' => '#963939',
-           	'background_color' => '#FFFFFF'
-	   );
-	}
-
-	if ( $_POST['local-clock-submit'] ) {
-	     $options_flag=1;
-              $newoptions['title'] = strip_tags(stripslashes($_POST['local-clock-title']));
-              $newoptions['titleflag'] = strip_tags(stripslashes($_POST['local-clock-titleflag']));
-              $newoptions['transparentflag'] = strip_tags(stripslashes($_POST['local-clock-transparentflag']));
-              $newoptions['ampmflag'] = strip_tags(stripslashes($_POST['local-clock-ampmflag']));
-              $newoptions['country'] = strip_tags(stripslashes($_POST['local-clock-country']));
-              $newoptions['state'] = strip_tags(stripslashes($_POST['local-clock-state']));
-              $newoptions['city'] = strip_tags(stripslashes($_POST['local-clock-city']));
-              $newoptions['country_name'] = strip_tags(stripslashes($_POST['local-clock-country_name']));
-              $newoptions['state_name'] = strip_tags(stripslashes($_POST['local-clock-state_name']));
-              $newoptions['size'] = strip_tags(stripslashes($_POST['local-clock-size']));
-              $newoptions['type'] = strip_tags(stripslashes($_POST['local-clock-type']));
-              $newoptions['typeflag'] = strip_tags(stripslashes($_POST['local-clock-typeflag']));
-              $newoptions['text_color'] = strip_tags(stripslashes($_POST['local-clock-text-color']));
-              $newoptions['border_color'] = strip_tags(stripslashes($_POST['local-clock-border-color']));
-              $newoptions['background_color'] = strip_tags(stripslashes($_POST['local-clock-background-color']));
+                #Create the widget
+                $this->WP_Widget( 'local_time_clock', __('Local Time Clock', 'local_time_clock'), $widget_ops, $control_ops );
         }
 
-      	if ( $options_flag ==1 ) {
-              $options = $newoptions;
-              update_option('local_time_clock', $options);
-      	}
+
+   	/*******************************************************************************************
+        *
+        *
+        * Update the widget settings.
+        *
+        *
+        *******************************************************************************************/
+        function update( $new_instance, $old_instance )
+        {
+                $instance = $old_instance;
+
+		global $country_list;
+		if(empty($country_list))
+		{
+			$file_location = dirname(__FILE__)."/countries.ser"; 
+			if ($fd = fopen($file_location,'r')){
+			   $country_list_ser = fread($fd,filesize($file_location));
+			   fclose($fd);
+			}
+			$country_list = array();
+			$country_list = unserialize($country_list_ser);
+		}
+
+		#
+		#			COUNTRY
+		#
+
+              	$country = strip_tags(stripslashes($new_instance['country']));
+              	$instance['country'] = $country;
+		ob_start();
+		$country_name = print_thecountry_list($country);
+		ob_end_clean();
+              	$instance['country_name'] = $country_name;
+
+		#
+		#	STATE
+		#
+
+		if(has_provinces($country))
+		{
+			$old_state = strip_tags(stripslashes($old_instance['state']));
+			$state = strip_tags(stripslashes($new_instance['state']));
+              		$instance['state'] = $state;
+			ob_start();
+  			$state_name = print_theprovince_list($country,$state);
+			ob_end_clean();
+			if($old_state != $state)
+				$new_country_flag = 1;
+		}
+		else
+		{
+			$state = "";
+			$state_name = "";
+		}
+
+              	$instance['state'] = $state;
+              	$instance['state_name'] = $state_name;
 
 
-      	// Extract value from vars
-      	$title = htmlspecialchars($options['title'], ENT_QUOTES);
-      	$titleflag = htmlspecialchars($options['titleflag'], ENT_QUOTES);
-      	$transparent_flag = htmlspecialchars($options['transparentflag'], ENT_QUOTES);
-      	$country = htmlspecialchars($options['country'], ENT_QUOTES);
-      	$state = htmlspecialchars($options['state'], ENT_QUOTES);
-      	$country_name = htmlspecialchars($options['country_name'], ENT_QUOTES);
-      	$state_name = htmlspecialchars($options['state_name'], ENT_QUOTES);
-      	$city = htmlspecialchars($options['city'], ENT_QUOTES);
-      	$size = htmlspecialchars($options['size'], ENT_QUOTES);
-      	$type = htmlspecialchars($options['type'], ENT_QUOTES);
-      	$typeflag = htmlspecialchars($options['typeflag'], ENT_QUOTES);
-      	$ampmflag = htmlspecialchars($options['ampmflag'], ENT_QUOTES);
-      	$text_color = htmlspecialchars($options['text_color'], ENT_QUOTES);
-      	$border_color = htmlspecialchars($options['border_color'], ENT_QUOTES);
-      	$background_color = htmlspecialchars($options['background_color'], ENT_QUOTES);
+		$instance['new_country_flag'] = $new_country_flag;
+		#
+		#	CITY
+		#
 
-      	echo '<ul><li style="text-align:center;list-style: none;"><label for="clock-title">Local Time Clock<br> by <a href="http://localtimes.info">localtimes.info</a></label></li>';
+		$new_country = strip_tags(stripslashes($new_instance['country']));
+		$old_country = strip_tags(stripslashes($old_instance['country']));
+
+		if($old_country != $new_country && empty($new_country_flag)){
+			$city = $country_list[$country_name]['capital_name'];
+			$new_country_flag = "";
+		}
+		else
+			$city = strip_tags(stripslashes($new_instance['city']));
+
+      		$instance['city'] = UCWords($city);
 
 
-       	// Get country, state, city
+		#
+		#	TITLE
+		#
 
-       	echo '<li style="list-style: none;"><label for="local-clock-country">Country:'.
-               '<select id="local-clock-country" name="local-clock-country" style="width:100%">';
+	      	if($city)
+			$title = UCWords($city) . " Time";
+	      	elseif($state_name)
+			$title = $state_name . " Time";
+	      	elseif($country_name)
+			$title = $country_name . " Time";				
 
-     	$country_name = print_thecountry_list($country);
-      	echo '<input id="local-clock-country_name" name="local-clock-country_name" type="hidden" value="'.$country_name.'" />';
-      	echo '</select></label></li>';
+		$instance['title'] = $title;
 
+		#
+		#
+		#
 
-       	// Get province
+              	$instance['titleflag'] = strip_tags(stripslashes($new_instance['titleflag']));
+              	$instance['transparentflag'] = strip_tags(stripslashes($new_instance['transparentflag']));
+              	$instance['ampmflag'] = strip_tags(stripslashes($new_instance['ampmflag']));
 
-       	echo '<li style="list-style: none;"><label for="local-clock-state">Province or State:'.
-               '<select id="local-clock-state" name="local-clock-state" style="width:100%">';
-     	$state_name = print_theprovince_list($country,$state);
-      	echo '<input id="local-clock-state_name" name="local-clock-state_name" type="hidden" value="'.$state_name.'" />';
-      	echo '</select></label></li>';
-
-       	// Get city
-
-        echo '<li style="list-style: none;"><label for="local-clock-city">City (optional): <input style="width: 90%;" id="local-clock-city" name="local-clock-city" type="text" value="'.$city.'" /> </label></li>';
-
-
-
-      	// Set clock type
-      	echo '<li style="list-style: none;"><label for="local-clock-typeflag">'.'Clock Type:&nbsp;';
-       	echo '<select id="local-clock-typeflag" name="local-clock-typeflag"  style="width:125px" >';
-      	print_type_list($typeflag);
-      	echo '</select></label>';
-      	echo '</li>';
+              	$instance['size'] = strip_tags(stripslashes($new_instance['size']));
+              	$instance['typeflag'] = strip_tags(stripslashes($new_instance['typeflag']));
+              	$instance['text_color'] = strip_tags(stripslashes($new_instance['text_color']));
+              	$instance['border_color'] = strip_tags(stripslashes($new_instance['border_color']));
+              	$instance['background_color'] = strip_tags(stripslashes($new_instance['background_color']));
 
 
-      	// Set Clock size
-	echo "\n";
-      	echo '<li style="list-style: none;text-align:bottom"><label for="local-clock-size">'.'Clock Size: &nbsp;'.
-         '<select id="local-clock-size" name="local-clock-size"  style="width:75px">';
-      	print_thesize_list($size);
-      	echo '</select></label></li>';
+		return $instance;
+
+	}
 
 
-      	// Set Text Clock color
-      	echo '<li style="list-style: none;"><label for="local-clock-text-color">'.'Text Color: &nbsp;';
-       	echo '<select id="local-clock-text-color" name="local-clock-text-color"  style="width:75px" >';
-      	print_textcolor_list($text_color);
-      	echo '</select></label>';
-      	echo '</li>';
-
-      	// Set Border Clock color
-      	echo '<li style="list-style: none;"><label for="local-clock-border-color">'.'Border Color:&nbsp;';
-       	echo '<select id="local-clock-border-color" name="local-clock-border-color"  style="width:75px" >';
-      	print_bordercolor_list($border_color);
-      	echo '</select></label>';
-      	echo '</li>';
-
-      	// Set Background Clock color
-      	echo '<li style="list-style: none;"><label for="local-clock-background-color">'.'Background Color:&nbsp;';
-       	echo '<select id="local-clock-background-color" name="local-clock-background-color"  style="width:75px" >';
-      	print_backgroundcolor_list($background_color);
-      	echo '</select></label>';
-      	echo '</li>';
-
-
-
-
-
-
-
-	//   Transparent option
-
-	$transparent_checked = "";
-	if ($transparent_flag =="1")
-	   $transparent_checked = "CHECKED";
-
-	echo "\n";
-        echo '<li style="list-style: none;"><label for="local-clock-transparentflag"> Transparent: 
-	<input type="checkbox" id="local-clock-transparentflag" name="local-clock-transparentflag" value=1 '.$transparent_checked.' /> 
-	</label></li>';
-
-	//   ampm option
-
-	$ampm_checked = "";
-	if ($ampm_flag =="1")
-	   $ampm_checked = "CHECKED";
-
-	echo "\n";
-        echo '<li style="list-style: none;"><label for="local-clock-ampmflag"> am/pm format: 
-	<input type="checkbox" id="local-clock-ampmflag" name="local-clock-ampmflag" value=1 '.$ampm_checked.' /> 
-	</label></li>';
-
-      	// Hidden "OK" button
-      	echo '<label for="local-clock-submit">';
-      	echo '<input id="local-clock-submit" name="local-clock-submit" type="hidden" value="Ok" />';
-      	echo '</label>';
-
-
-	//	Title header option	
-	if($city)
-		$title = UCWords($city) . " Time";
-	elseif($state_name)
-		$title = $state_name . " Time";
-	elseif($country_name)
-		$title = $country_name . " Time";
-
-        echo '<label for="local-clock-title"> <input type="hidden" id="local-clock-title" name="local-clock-title" value="'.$title.'" /> </label>';
+       /*******************************************************************************************
+         *
+         *      Displays the widget settings controls on the widget panel.
+         *      Make use of the get_field_id() and get_field_name() function
+         *      when creating your form elements. This handles the confusing stuff.
+         *
+         *
+         ********************************************************************************************/
+        function form( $instance )
+        {
 
 
 
-	$title_checked = "";
-	if ($titleflag =="1")
-	   $title_checked = "CHECKED";
+print_r($instance);
 
-	echo "\n";
-        echo '<li style="list-style: none;"><label for="local-clock-titleflag"> City Title: 
-	<input type="checkbox" id="local-clock-titleflag" name="local-clock-titleflag" value=1 '.$title_checked.' /> 
-	</label></li>';
+                #
+                #       Set up some default widget settings
+                #
 
-	echo '</ul>';
+      	   	$default = array(
+	   		 'title' => 'London Time',
+           		 'titleflag'=>'1', 
+           		 'transparentflag'=>'0', 
+           		 'ampmflag'=>'0', 
+           		 'country' => 'GB',
+           		 'new_country_flag' => '',
+           		 'country_name' => 'United Kingdom',
+			 'state' => '',
+			 'state_name' => '',
+           		 'city' => 'London',
+           		 'size' => '150',
+           		 'typeflag' => '1000',
+           		 'text_color' => '#000000',
+           		 'border_color' => '#963939',
+           		 'background_color' => '#FFFFFF'
+	   	);
+
+      		if(!isset($instance['country']))
+                        $instance = $default;
+
+      		// Extract value from instance
+		$title = format_to_edit($instance['title']);
+      		#$title = htmlspecialchars($instance['title'], ENT_QUOTES);
+      		$titleflag = htmlspecialchars($instance['titleflag'], ENT_QUOTES);
+      		$transparent_flag = htmlspecialchars($instance['transparentflag'], ENT_QUOTES);
+      		$country = htmlspecialchars($instance['country'], ENT_QUOTES);
+      		$new_country_flag = htmlspecialchars($instance['new_country_flag'], ENT_QUOTES);
+      		$state = htmlspecialchars($instance['state'], ENT_QUOTES);
+      		$country_name = htmlspecialchars($instance['country_name'], ENT_QUOTES);
+      		$state_name = htmlspecialchars($instance['state_name'], ENT_QUOTES);
+      		$city = htmlspecialchars($instance['city'], ENT_QUOTES);
+      		$size = htmlspecialchars($instance['size'], ENT_QUOTES);
+      		$typeflag = htmlspecialchars($instance['typeflag'], ENT_QUOTES);
+      		$ampmflag = htmlspecialchars($instance['ampmflag'], ENT_QUOTES);
+      		$text_color = htmlspecialchars($instance['text_color'], ENT_QUOTES);
+      		$border_color = htmlspecialchars($instance['border_color'], ENT_QUOTES);
+      		$background_color = htmlspecialchars($instance['background_color'], ENT_QUOTES);
+
+
+
+       		#
+                #
+                #               START FORM OUTPUT
+                #
+                #
+
+                echo '<div style="align:center;text-align:center;margin-bottom:10px">';
+      		echo 'Local Time Clock<br> by <a href="http://localtimes.info">localtimes.info</a></div>';
+
+
+       		// Get country, state, city
+
+       		echo '<p><label for="' .$this->get_field_id( 'country' ). '">Country <span style="display:inline;font-size:9px">(Save after selecting)</span>'.
+               	     '<select id="' .$this->get_field_id( 'country' ). '" name="' .$this->get_field_name( 'country' ). '" style="width:100%">';
+     		$country_name = print_thecountry_list($country);
+      		echo '</select></label></p>';
+
+
+       		// Get province 
+		if(has_provinces($country))
+		{
+			echo '<p><label for="' .$this->get_field_id( 'state' ). '">Province or State <span style="display:inline;font-size:9px">(Save after selecting)</span>'.
+               	     	     '<select id="' .$this->get_field_id( 'state' ). '" name="' .$this->get_field_name( 'state' ). '" style="width:100%">';
+     			     $state_name = print_theprovince_list($country,$state);
+      			echo '</select></label></p>';
+		}
+		else
+			$state ="";
+			
+		if($new_country_flag == 1)
+		     $city ="";
+
+       		// Get city
+		echo '<p><label for="' .$this->get_field_id( 'city' ). '">City: ';
+		echo '<input style="width: 90%;"t id="' .$this->get_field_id( 'city' ). '" name="' .$this->get_field_name('city' ). '" type="text" value="'.$city.'" /> </label></p>';
+
+
+
+      		// Set clock type
+      		echo '<p><label for="' .$this->get_field_id( 'typeflag' ). '">'.'Clock Type:&nbsp;';
+       		echo '<select id="' .$this->get_field_id( 'typeflag' ). '" name="' .$this->get_field_name('typeflag' ). '"  style="width:125px" >';
+      		print_type_list($typeflag);
+      		echo '</select></label>';
+      		echo '</p>';
+
+
+      		// Set Clock size
+		echo "\n";
+      		echo '<p><label for="' .$this->get_field_id( 'size' ). '">'.'Clock Size: &nbsp;'.
+         	     '<select id="' .$this->get_field_id( 'size' ). '" name="' .$this->get_field_name('size' ). '"  style="width:75px">';
+      		print_thesize_list($size);
+      		echo '</select></label></p>';
+
+
+      		// Set Text Clock color
+      		echo '<p><label for="' .$this->get_field_id( 'text_color' ). '">'.'Text Color: &nbsp;';
+       		echo '<select id="' .$this->get_field_id( 'text_color' ). '" name="' .$this->get_field_name('text_color' ). '"  style="width:75px" >';
+      		print_textcolor_list($text_color);
+      		echo '</select></label>';
+      		echo '</p>';
+
+		if($typeflag < 1000)
+		{
+      		   // Set Border Clock color
+      		   echo '<p><label for="' .$this->get_field_id( 'border_color' ). '">'.'Border Color:&nbsp;';
+       		   echo '<select id="' .$this->get_field_id( 'border_color' ). '" name="' .$this->get_field_name('border_color' ). '"  style="width:75px" >';
+      		   print_bordercolor_list($border_color);
+      		   echo '</select></label>';
+      		   echo '</p>';
+		}
+		else{
+			echo '<label for="' .$this->get_field_id( 'border_color' ). '">';
+      			echo '<input id="' .$this->get_field_id( 'border_color' ). '" name="' .$this->get_field_name( 'border_color' ). '" type="hidden" value="'.$border_color.'" /></label>';
+		}
+
+      		   // Set Background Clock color
+      		   echo '<p><label for="' .$this->get_field_id( 'background_color' ). '">'.'Background Color:&nbsp;';
+       		   echo '<select id="' .$this->get_field_id( 'background_color' ). '" name="' .$this->get_field_name('background_color' ). '"  style="width:75px" >';
+      		   print_backgroundcolor_list($background_color);
+      		   echo '</select></label>';
+      		   echo '</p>';
+
+
+		   //   Transparent option
+
+		   $transparent_checked = "";
+		   if ($transparent_flag =="1")
+	   	      $transparent_checked = "CHECKED";
+
+		   echo "\n";
+        	   echo '<p><label for="' .$this->get_field_id( 'transparentflag' ). '"> Transparent: 
+		   <input type="checkbox"t id="' .$this->get_field_id( 'transparentflag' ). '" name="' .$this->get_field_name('transparentflag' ). '" value=1 '.$transparent_checked.' /> 
+		   </label></p>';
+
+		   //   ampm option
+
+		   $ampm_checked = "";
+		   if ($ampm_flag =="1")
+	   	      $ampm_checked = "CHECKED";
+
+		      echo "\n";
+        	      echo '<p><label for="' .$this->get_field_id( 'ampmflag' ). '"> am/pm format: 
+		      <input type="checkbox"t id="' .$this->get_field_id( 'ampmflag' ). '" name="' .$this->get_field_name('ampmflag' ). '" value=1 '.$ampm_checked.' /> 
+		      </label></p>';
+
+
+		$title_checked = "";
+		if ($titleflag =="1")
+	   	   $title_checked = "CHECKED";
+
+        	echo '<p><label for="' .$this->get_field_id( 'titleflag' ). '"> City Title: 
+		  <input type="checkbox"t id="' .$this->get_field_id( 'titleflag' ). '" name="' .$this->get_field_name('titleflag' ). '" value=1 '.$title_checked.' /> 
+		  </label></p>';
+
+		  echo "\n";
+    		echo '<label for="' .$this->get_field_id( 'title' ). '">';
+             	echo '<input type="hidden" id="' .$this->get_field_id( 'title' ). '" name="' .$this->get_field_name( 'title' ). '" value="' . $title . '" />';
+		echo '</label>';
+
 
 
     }
@@ -219,32 +358,30 @@ function local_time_clock_init()
     //
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-     function local_time_clock($args) 
+     function widget ($args, $instance) 
      {
+
 
 	// Get values 
       	extract($args);
 
-      	$options = get_option('local_time_clock');
-
 
 	// Get Title,Location,Size,
-
-      	$title = htmlspecialchars($options['title'], ENT_QUOTES);
-      	$titleflag = htmlspecialchars($options['titleflag'], ENT_QUOTES);
-      	$transparentflag = htmlspecialchars($options['transparentflag'], ENT_QUOTES);
-      	$ampmflag = htmlspecialchars($options['ampmflag'], ENT_QUOTES);
-      	$country = htmlspecialchars($options['country'], ENT_QUOTES);
-      	$state = htmlspecialchars($options['state'], ENT_QUOTES);
-      	$country_name = htmlspecialchars($options['country_name'], ENT_QUOTES);
-      	$state_name = htmlspecialchars($options['state_name'], ENT_QUOTES);
-      	$city = htmlspecialchars($options['city'], ENT_QUOTES);
-      	$size = htmlspecialchars($options['size'], ENT_QUOTES);
-      	$type = htmlspecialchars($options['type'], ENT_QUOTES);
-      	$typeflag = htmlspecialchars($options['typeflag'], ENT_QUOTES);
-      	$text_color = htmlspecialchars($options['text_color'], ENT_QUOTES);
-      	$border_color = htmlspecialchars($options['border_color'], ENT_QUOTES);
-      	$background_color = htmlspecialchars($options['background_color'], ENT_QUOTES);
+	$title = apply_filters('widget_title', $instance['title'] );
+#      	$title = htmlspecialchars($instance['title'], ENT_QUOTES);
+      	$titleflag = htmlspecialchars($instance['titleflag'], ENT_QUOTES);
+      	$transparentflag = htmlspecialchars($instance['transparentflag'], ENT_QUOTES);
+      	$ampmflag = htmlspecialchars($instance['ampmflag'], ENT_QUOTES);
+      	$country = htmlspecialchars($instance['country'], ENT_QUOTES);
+      	$state = htmlspecialchars($instance['state'], ENT_QUOTES);
+      	$country_name = htmlspecialchars($instance['country_name'], ENT_QUOTES);
+      	$state_name = htmlspecialchars($instance['state_name'], ENT_QUOTES);
+      	$city = htmlspecialchars($instance['city'], ENT_QUOTES);
+      	$size = htmlspecialchars($instance['size'], ENT_QUOTES);
+      	$typeflag = htmlspecialchars($instance['typeflag'], ENT_QUOTES);
+      	$text_color = htmlspecialchars($instance['text_color'], ENT_QUOTES);
+      	$border_color = htmlspecialchars($instance['border_color'], ENT_QUOTES);
+      	$background_color = htmlspecialchars($instance['background_color'], ENT_QUOTES);
 
 
 	echo $before_widget; 
@@ -301,6 +438,7 @@ function local_time_clock_init()
 
 	$widget_call_string .= '&cp3_Hex='.$border_color.'&cp2_Hex='.$background_color.'&cp1_Hex='.$text_color. $transparent_string . $ampm_string. '&fwdt='.$size;
 
+	if($typeflag == 1)$typeflag=1000;
  	$widget_call_string .= "&widget_number=$typeflag";
 
 	echo '<script type="text/javascript" src="'.$widget_call_string . '"></script></div><!-end of code-->';
@@ -313,19 +451,11 @@ function local_time_clock_init()
 
     }
   
-    register_sidebar_widget('Local Time Clock', 'local_time_clock');
-    register_widget_control('Local Time Clock', 'local_time_clock_control', 245, 300);
 
 
 }
 
 
-add_action('plugins_loaded', 'local_time_clock_init');
-
-
-// This function print for selector clock color list
-
-include("functions.php");
 
 
 ?>

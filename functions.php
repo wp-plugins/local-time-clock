@@ -4,6 +4,7 @@ function print_thecountry_list($country)
 {
 
 	//	$country_list[$country_name]['country_code']
+	global $country_list;
 
 	if(empty($country_list)){
 
@@ -38,12 +39,38 @@ function print_thecountry_list($country)
 }
 
 
+function has_provinces($country)
+{
+	//
+	//	Province list
+	//	$province_list[$country_name][$province_name]['province_code'];
+
+	global $province_list;
+
+	if(empty($province_list)){
+		$file_location = dirname(__FILE__)."/province_list.ser"; 
+		if ($fd = fopen($file_location,'r')){
+			$province_list_ser = fread($fd,filesize($file_location));
+			fclose($fd);
+		}
+		$province_list = unserialize($province_list_ser);
+	}
+
+
+	if(empty($province_list[$country])) 
+		return false;
+	else
+		return true;
+
+}
+
 function print_theprovince_list($country, $province)
 {
 	//
 	//	Province list
 	//	$province_list[$country_name][$province_name]['province_code'];
 
+	global $province_list;
 
 	if(empty($province_list)){
 		$file_location = dirname(__FILE__)."/province_list.ser"; 
