@@ -152,7 +152,7 @@ class local_time_clock extends WP_Widget
 		#
 		#
 
-              	$instance['titleflag'] = strip_tags(stripslashes($new_instance['titleflag']));
+              	$instance['tflag'] = strip_tags(stripslashes($new_instance['tflag']));
               	$instance['transparentflag'] = strip_tags(stripslashes($new_instance['transparentflag']));
               	$instance['ampmflag'] = strip_tags(stripslashes($new_instance['ampmflag']));
 
@@ -188,7 +188,7 @@ class local_time_clock extends WP_Widget
 
       	   	$default = array(
 	   		 'title' => 'London Time',
-           		 'titleflag'=>'1', 
+           		 'tflag'=>'1', 
            		 'transparentflag'=>'0', 
            		 'ampmflag'=>'0', 
            		 'country' => 'GB',
@@ -210,7 +210,7 @@ class local_time_clock extends WP_Widget
       		// Extract value from instance
 		$title = format_to_edit($instance['title']);
       		#$title = htmlspecialchars($instance['title'], ENT_QUOTES);
-      		$titleflag = htmlspecialchars($instance['titleflag'], ENT_QUOTES);
+      		$tflag = htmlspecialchars($instance['tflag'], ENT_QUOTES);
       		$transparent_flag = htmlspecialchars($instance['transparentflag'], ENT_QUOTES);
       		$country = htmlspecialchars($instance['country'], ENT_QUOTES);
       		$new_country_flag = htmlspecialchars($instance['new_country_flag'], ENT_QUOTES);
@@ -334,11 +334,11 @@ class local_time_clock extends WP_Widget
 
 
 		$title_checked = "";
-		if ($titleflag =="1")
+		if ($tflag =="1")
 	   	   $title_checked = "CHECKED";
 
-        	echo '<p><label for="' .$this->get_field_id( 'titleflag' ). '"> City Title: 
-		  <input type="checkbox"t id="' .$this->get_field_id( 'titleflag' ). '" name="' .$this->get_field_name('titleflag' ). '" value=1 '.$title_checked.' /> 
+        	echo '<p><label for="' .$this->get_field_id( 'tflag' ). '"> City Title: 
+		  <input type="checkbox"t id="' .$this->get_field_id( 'tflag' ). '" name="' .$this->get_field_name('tflag' ). '" value=1 '.$title_checked.' /> 
 		  </label></p>';
 
 		  echo "\n";
@@ -368,7 +368,7 @@ class local_time_clock extends WP_Widget
 	// Get Title,Location,Size,
 	$title = apply_filters('widget_title', $instance['title'] );
 #      	$title = htmlspecialchars($instance['title'], ENT_QUOTES);
-      	$titleflag = htmlspecialchars($instance['titleflag'], ENT_QUOTES);
+      	$tflag = htmlspecialchars($instance['tflag'], ENT_QUOTES);
       	$transparentflag = htmlspecialchars($instance['transparentflag'], ENT_QUOTES);
       	$ampmflag = htmlspecialchars($instance['ampmflag'], ENT_QUOTES);
       	$country = htmlspecialchars($instance['country'], ENT_QUOTES);
@@ -420,7 +420,7 @@ class local_time_clock extends WP_Widget
              $ampm_string = "&ham=0";
 
 
-	if($titleflag != 1){
+	if($tflag != 1){
 	      $noscript_start = "<noscript>";
 	      $noscript_end = "</noscript>";
 	}
