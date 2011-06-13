@@ -324,7 +324,7 @@ class local_time_clock extends WP_Widget
 		   //   ampm option
 
 		   $ampm_checked = "";
-		   if ($ampm_flag =="1")
+		   if ($ampmflag =="1")
 	   	      $ampm_checked = "CHECKED";
 
 		      echo "\n";

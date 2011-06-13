@@ -38,6 +38,7 @@ Display a flash clock on your sidebar set automatically to your location's timez
 6. Digital Time and Date clock
 7. Digital Flip-over clock
 8. Digital Stick-it Note clock
+9. Admin Panel
 
 == Changelog ==
 = 1.2 =
