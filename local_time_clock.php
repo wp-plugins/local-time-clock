@@ -181,7 +181,6 @@ class local_time_clock extends WP_Widget
 
 
 
-print_r($instance);
 
                 #
                 #       Set up some default widget settings
