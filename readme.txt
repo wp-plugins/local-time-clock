@@ -1,7 +1,7 @@
 === Local Time Clock ===
 Contributors: enclick
 Donate link: http://www.localtimes.info/
-Tags: clock, flash clock, clock widget, local time, timezone, time, analog clock, digital clock, local times, world clock
+Tags: clock, flash clock, clock widget, local time, timezone, time, analog clock, digital clock, local times, current time, date, world clock
 Tested up to: 3.0.9
 Requires at least: 2.8
 Stable tag: 1.2
