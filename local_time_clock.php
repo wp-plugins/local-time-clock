@@ -389,7 +389,7 @@ class local_time_clock extends WP_Widget
 
 		// Output title
 		$title = UCWords($title);
-		echo $before_title . $title . $after_title; 
+		echo $before_title . $after_title; 
 
 
 		// Output Clock
