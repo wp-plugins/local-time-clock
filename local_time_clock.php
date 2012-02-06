@@ -400,6 +400,7 @@ class local_time_clock extends WP_Widget
 			$target_url .= $state_name ."/";
 
 		$target_url .= $city ."/";
+		$target_url= str_replace(" ", "_", $target_url);
 		$country_name = str_replace(" ", "+", $country_name);
 		$city= str_replace(" ", "+", $city);
 		$country_code = strtolower($country);
