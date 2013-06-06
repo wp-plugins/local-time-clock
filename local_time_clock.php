@@ -396,7 +396,7 @@ class local_time_clock extends WP_Widget
 
 
 		$target_url= "http://localtimes.info/$country_name/";
-		if ($state_name)
+		if ($state_name != "")
 			$target_url .= $state_name ."/";
 
 		$target_url .= $city ."/";
@@ -404,7 +404,9 @@ class local_time_clock extends WP_Widget
 		$country_name = str_replace(" ", "+", $country_name);
 		$city= str_replace(" ", "+", $city);
 		$country_code = strtolower($country);
-		$province_string = "&province=".$state_name;
+
+		if ($state_name != "")
+			$province_string = "&province=".$state_name;
 
 		$widget_call_string = 'http://localtimes.info/wp_clock.php?country='.$country_name;
 		$widget_call_string .= $province_string . '&city='.$city;
