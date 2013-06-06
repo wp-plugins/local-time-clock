@@ -140,11 +140,14 @@ class local_time_clock extends WP_Widget
 		#
 
 		if($city)
-			$title = UCWords($city) . " Time";
+			$title = UCWords($city);
+			#$title = UCWords($city) . " Time";
 		elseif($state_name)
-			$title = $state_name . " Time";
+			$title = $state_name;
+			#$title = $state_name . " Time";
 		elseif($country_name)
-			$title = $country_name . " Time";				
+			$title = $country_name;				
+			#$title = $country_name . " Time";				
 
 		$instance['title'] = $title;
 
@@ -187,7 +190,7 @@ class local_time_clock extends WP_Widget
 		#
 
 		$default = array(
-			'title' => 'London Time',
+			'title' => 'London',
 			'tflag'=>'0', 
 			'transparentflag'=>'0', 
 			'ampmflag'=>'0', 
@@ -401,6 +404,8 @@ class local_time_clock extends WP_Widget
 
 		$target_url .= $city ."/";
 		$target_url= str_replace(" ", "_", $target_url);
+
+
 		$country_name = str_replace(" ", "+", $country_name);
 		$city= str_replace(" ", "+", $city);
 		$country_code = strtolower($country);
