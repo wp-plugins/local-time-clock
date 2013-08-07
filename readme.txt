@@ -1,17 +1,17 @@
 === Local Time Clock ===
 Contributors: enclick
 Donate link: http://www.localtimes.info/
-Tags: clock, flash clock, clock widget, local time, timezone, time, analog clock, digital clock, local times, current time, date, world clock
-Tested up to: 3.5
+Tags: clock, html5 clock, flash clock, mobile clock, clock widget, local time, timezone, time, analog clock, digital clock, local times, current time, date, world clock
+Tested up to: 3.6
 Requires at least: 2.8
 Stable tag: 1.2
 
 
 == Description ==
 
-Display a flash clock on your sidebar set automatically to your location's timezone. Select from a choice of clocks, colors and sizes.
+Display a clock on your sidebar set automatically to your location's timezone. Select from a choice of clocks, colors and sizes.
 
-* A wide range of analog and digital clocks. See screenshots tab or designs shown in [localtimes.info/getwidget](http://localtimes.info/get-clock-widget/analog/ "Clock Widget Designs")
+* A wide range of analog and digital clocks. See screenshots tab or designs shown in [localtimes.info/getwidget](http://localtimes.info/getwidget/ "Clock Widget Designs")
 * Choice of size, colors of text, border and background,
 * Automatic adjustment of daylight saving time from the [localtimes.info](http://localtimes.info "Local Times round the world") servers
 * Easy addition of multiple clocks 
@@ -82,7 +82,7 @@ Yes, the clock automatically changes for all Daylight Saving Time changes in the
 Daylight saving time is the convention of advancing clocks so that afternoons have more daylight and mornings have less. [Click here for more information](http://en.wikipedia.org/wiki/Daylight_saving_time "Daylight Saving Time")
 
 = Is there support  ? = 
-Further support is available at [localtimes.info/support](http://localtimes.info/wordpress-clock-plugin/), or [localtimes.info/conditions](http://localtimes.info/get-clock-widget/analog/#conditions) 
+Further support is available at [localtimes.info/support](http://localtimes.info/wordpress-clock-plugin/), or [localtimes.info/conditions](http://localtimes.info/getwidget/#conditions) 
 
 = Contact  = 
 Email us at widgets at localtimes.info or send us a message on [twitter.com/localtimes](http://twitter.com/localtimes) 
